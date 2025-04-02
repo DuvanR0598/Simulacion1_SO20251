@@ -85,11 +85,25 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+
+   - `PID 0:` Un proceso que solo realiza una operación de E/S.
+   - `PID 1:` Un proceso que ejecuta 4 instrucciones en la CPU.
+  
+   <br>
+
+   Al cambiar el orden de los procesos con `-l 1:0,4:100`, el proceso que realiza E/S (PID 0) se ejecuta primero. Como resultado, el sistema debe esperar a que finalice la operación de E/S antes de permitir que el proceso de CPU (PID 1) comience su ejecución.
+   En este caso, el tiempo total de ejecución se reduce a 7 unidades de tiempo en comparación con los 11 tiempos de la ejecución anterior `(-l 4:100,1:0)`. Esto ocurre porque el proceso de CPU ahora puede ejecutarse en paralelo con la espera de E/S, optimizando el uso de los recursos del sistema.
+   Por lo tanto, sí importa el orden de ejecución, ya que afecta el tiempo total de finalización de los procesos y la eficiencia del sistema. Ejecutar primero un proceso de E/S permite que la CPU trabaje mientras la E/S está en progreso, reduciendo el tiempo total de espera.
+
+   <br>
+
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%202.png?raw=true" alt="Pregunta 1" width="400"/>
+   </div>
    </details>
    <br>
 
-4. We'll now explore some of the other flags. One important flag is `-S`, which determines how the system reacts when a process issues an I/O. With the flag set to SWITCH ON END, the system will NOT switch to another process while one is doing I/O, instead waiting until the process is completely finished. What happens when you run the following two processes (`-l 1:0,4:100 -c -S SWITCH ON END`), one doing I/O and the other doing CPU work?
+5. We'll now explore some of the other flags. One important flag is `-S`, which determines how the system reacts when a process issues an I/O. With the flag set to SWITCH ON END, the system will NOT switch to another process while one is doing I/O, instead waiting until the process is completely finished. What happens when you run the following two processes (`-l 1:0,4:100 -c -S SWITCH ON END`), one doing I/O and the other doing CPU work?
    
    <details>
    <summary>Answer</summary>
@@ -97,7 +111,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-5. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
+6. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
    
    <details>
    <summary>Answer</summary>
@@ -105,7 +119,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-6. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
+7. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
    
    <details>
    <summary>Answer</summary>
@@ -113,7 +127,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-7. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
+8. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
    
    <details>
    <summary>Answer</summary>
