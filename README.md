@@ -52,11 +52,36 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+   La CPU estará ocupada solo durante los primeros 4 ciclos, luego quedará inactiva.
+      
+   - `4:100` → Un proceso que usa la CPU durante 4 unidades de tiempo al 100%.
+   - `1:0` → Un proceso que no usa CPU y espera en la cola.
+
+   <br>
+
+   **¿Cuánto tiempo tarda en completarse ambos procesos?**
+   - El primer proceso (PID 0) ejecuta 4 instrucciones en la CPU, lo que toma 4 unidades de tiempo.
+   - El segundo proceso (PID 1) ejecuta una operación de E/S en el tiempo 5, lo que lo pone en estado bloqueado durante 5 unidades de tiempo.
+   - Cuando finaliza la espera de E/S (tiempo 10), el proceso 1 ejecuta su última instrucción en el tiempo 11 y termina.
+
+   <br>
+
+   _El tiempo total que tardan en completarse ambos procesos es 11 unidades de tiempo._
+
+   Lo anterior, se puede verificar en las estadísticas del programa:
+   - Tiempo total de ejecución: 11 unidades de tiempo.
+   - Tiempo en que la CPU estuvo ocupada: 6 unidades (54.55%).
+   - Tiempo en que la CPU estuvo inactiva esperando la E/S: 5 unidades (45.45%).
+
+   <br>
+   
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%202.png?raw=true" alt="Pregunta 1" width="400"/>
+   </div>
    </details>
    <br>
 
-2. Switch the order of the processes: `-l 1:0,4:100`. What happens now? Does switching the order matter? Why? (As always, use `-c` and `-p` to see if you were right)
+3. Switch the order of the processes: `-l 1:0,4:100`. What happens now? Does switching the order matter? Why? (As always, use `-c` and `-p` to see if you were right)
    
    <details>
    <summary>Answer</summary>
@@ -64,7 +89,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-3. We'll now explore some of the other flags. One important flag is `-S`, which determines how the system reacts when a process issues an I/O. With the flag set to SWITCH ON END, the system will NOT switch to another process while one is doing I/O, instead waiting until the process is completely finished. What happens when you run the following two processes (`-l 1:0,4:100 -c -S SWITCH ON END`), one doing I/O and the other doing CPU work?
+4. We'll now explore some of the other flags. One important flag is `-S`, which determines how the system reacts when a process issues an I/O. With the flag set to SWITCH ON END, the system will NOT switch to another process while one is doing I/O, instead waiting until the process is completely finished. What happens when you run the following two processes (`-l 1:0,4:100 -c -S SWITCH ON END`), one doing I/O and the other doing CPU work?
    
    <details>
    <summary>Answer</summary>
@@ -72,7 +97,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-4. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
+5. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
    
    <details>
    <summary>Answer</summary>
@@ -80,7 +105,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-5. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
+6. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
    
    <details>
    <summary>Answer</summary>
@@ -88,7 +113,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-6. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
+7. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
    
    <details>
    <summary>Answer</summary>
