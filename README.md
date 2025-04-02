@@ -107,11 +107,32 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+   
+   Este comando ejecuta dos procesos:
+   - Un proceso `(PID 0)` que realiza una operación de entrada/salida (E/S).
+   - Un proceso `(PID 1)` que ejecuta 4 instrucciones de CPU.
+   - La opción `-S SWITCH_ON_END` hace que el sistema no cambie de proceso hasta que el proceso en ejecución termine completamente.
+
+   <br>
+
+   Con la configuración anterior, es decir, `-S SWITCH_ON_END` el sistema no cambia a otro proceso hasta que el proceso actual termine completamente, incluso si está esperando una E/S. Esto significa que:
+   - El proceso de E/S (PID 0) se ejecuta primero y la CPU queda ociosa mientras espera que termine la E/S.
+   - El proceso de CPU (PID 1) no puede ejecutarse hasta que PID 0 termine por completo, lo que desperdicia ciclos de CPU.
+   - El tiempo total de ejecución aumenta, ya que la CPU no aprovecha los ciclos en los que el proceso de E/S está bloqueado.
+  
+   <br>
+
+   Este comportamiento es menos eficiente en comparación con la ejecución sin `SWITCH_ON_END`, donde el proceso de CPU podría haber avanzado mientras la E/S se completaba en paralelo.
+
+   <br>
+
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%204.png?raw=true" alt="Pregunta 1" width="700"/>
+   </div>
    </details>
    <br>
 
-6. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
+7. Now, run the same processes, but with the switching behavior set to switch to another process whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now? Use `-c` and `-p` to confirm that you are right.
    
    <details>
    <summary>Answer</summary>
@@ -119,7 +140,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-7. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
+8. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
    
    <details>
    <summary>Answer</summary>
@@ -127,7 +148,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-8. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
+9. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
    
    <details>
    <summary>Answer</summary>
