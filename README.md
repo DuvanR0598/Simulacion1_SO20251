@@ -227,6 +227,11 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    ⚠️ Se observa un retraso en la ejecución de procesos dependientes de E/S, lo que podría ser un problema en sistemas donde la latencia es crítica.
 
+   <br>
+
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%206.png?raw=true" alt="Pregunta 1" width="400"/>
+   </div>
 
    </details>
    <br>
