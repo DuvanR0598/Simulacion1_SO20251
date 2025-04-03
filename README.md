@@ -176,11 +176,62 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+
+   Para esta ejecución, se aplica la opción `-I IO RUN LATER`, lo que significa que cuando un proceso completa su operación de E/S, no se ejecuta inmediatamente. En su lugar, el proceso que ya estaba ejecutándose en la CPU continúa corriendo hasta que ceda el control según la política de planificación.
+
+   <br>
+
+   **Análisis del Comportamiento**
+
+   <br>
+
+   **1. Inicio del proceso de E/S (`PID 0`) en el tiempo 1.**
+   - Mientras `PID 0` está ejecutando una operación de entrada/salida (IO), los procesos `PID 1`, `PID 2` y `PID 3` están en estado READY, esperando CPU.
+
+   <br>
+
+   **2. Ejecución de los procesos de CPU (`PID 1, 2, 3`).**
+   - Desde el tiempo 2 hasta el 16, los procesos de CPU (`PID 1, 2, 3`) ejecutan su carga de trabajo en la CPU.
+   - `PID 0` sigue bloqueado en espera de su E/S.
+  
+   <br>
+
+   **3. Finalización de la primera E/S en el tiempo 17 (`RUN: io_done`).**
+   - Pero NO se ejecuta inmediatamente, porque IO_RUN_LATER hace que el proceso espere su turno.
+   - En su lugar, otro proceso (probablemente de CPU) sigue ejecutándose.
+
+   <br>
+
+   **4. Se inicia otra operación de E/S (`PID 0` nuevamente en el tiempo 18).**
+   - Sigue el mismo patrón: los procesos de CPU siguen ejecutándose mientras la E/S ocurre en paralelo.
+
+   <br>
+
+   **5. Repetición del ciclo hasta que todos los procesos terminan.**
+   - Se observa que `PID 0` realiza múltiples operaciones de E/S.
+   - Cada vez que termina su E/S, debe esperar hasta que los procesos de CPU terminen su turno antes de ejecutarse.
+
+   <br>
+
+   Todo lo anterior, duro 31 unidades de tiempo, la CPU esuvo ocupada 21 unidades de tiempo lo que equivale al 67.74%, por ultimo las E/S estuvieron ocupadas 15 unidades de tiempo, lo que equivalkes al 48.39%.
+
+   <br>
+
+   **¿Se utilizan eficazmente los recursos del sistema?**
+
+   Podemos decir que este esquema es útil en escenarios donde la prioridad es maximizar el uso de la CPU y minimizar la sobrecarga de cambios de contexto. Sin embargo, en sistemas donde la E/S es crucial (por ejemplo, bases de datos o servidores de archivos), este enfoque podría generar tiempos de espera innecesarios para los procesos que dependen de la E/S. Dado lo anterior se puede resumir en 2 items:
+
+   <br>
+   
+   ✅ Se maximizó el uso de la CPU, lo cual es eficiente si el objetivo es reducir el tiempo de inactividad de la CPU.
+   
+   ⚠️ Se observa un retraso en la ejecución de procesos dependientes de E/S, lo que podría ser un problema en sistemas donde la latencia es crítica.
+
+
    </details>
    <br>
 
-10. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
+11. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
    
    <details>
    <summary>Answer</summary>
