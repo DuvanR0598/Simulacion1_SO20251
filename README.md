@@ -230,7 +230,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    <br>
 
    <div align="center">
-      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%206.png?raw=true" alt="Pregunta 1" width="400"/>
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%206.png?raw=true" alt="Pregunta 1" width="700"/>
    </div>
 
    </details>
@@ -240,7 +240,45 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+
+   **¿Qué diferencia habrá con IO_RUN_IMMEDIATE?**
+   
+   Al cambiar de `IO_RUN_LATER` a `IO_RUN_IMMEDIATE`, se puede notar varias cosas:
+
+   **1. El proceso que completó la E/S se ejecuta de inmediato.**
+   - En `IO_RUN_LATER`, la CPU seguía ejecutando al proceso activo y el que terminó la E/S debía esperar.
+   - En `IO_RUN_IMMEDIATE`, el proceso que finaliza su E/S toma la CPU inmediatamente.
+
+   <br>
+
+   **2. Se da prioridad a los procesos de E/S.**
+   - Esto puede ser más eficiente en sistemas donde la E/S es un cuello de botella.
+   - Reduce la latencia en procesos que dependen fuertemente de operaciones de E/S.
+
+   <br>
+
+   **3. Puede haber más cambios de contexto.**
+   - Cuando un proceso de E/S finaliza y toma la CPU de inmediato, esto puede causar más interrupciones y cambios de contexto, lo que podría afectar el rendimiento en ciertos caso
+
+   **¿Por qué sería recomendable ejecutar de nuevo un proceso que acaba de completar una E/S?**
+
+   **1. Optimización del tiempo de respuesta**
+   - Si un proceso depende de la E/S (por ejemplo, leer datos de disco o de una red), ejecutarlo inmediatamente después de la E/S reduce su tiempo de espera y mejora la experiencia del usuario o la eficiencia del sistema.
+
+   <br>
+
+   **2. Evita desperdiciar ciclos de CPU**
+   - Si la CPU está libre o el proceso en ejecución no es crítico, es mejor darle prioridad al proceso que terminó su E/S para que continúe sin retrasos innecesarios.
+
+   <br>
+
+   **3. Mejora el rendimiento en sistemas I/O-bound**
+   - Si el sistema tiene muchos procesos que dependen de la E/S, ejecutar de inmediato estos procesos mejora el throughput del sistema.
+
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%207.png?raw=true" alt="Pregunta 1" width="700"/>
+   </div>
+
    </details>
    <br>
 
