@@ -136,11 +136,43 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    
    <details>
    <summary>Answer</summary>
-   Coloque aqui su respuerta
+
+   Con `SWITCH_ON_IO`, la CPU no se queda inactiva esperando que termine la E/S, sino que aprovecha el tiempo ejecutando otro proceso. lo anterior significa que:
+   - El proceso 0 comienza la E/S y la CPU cambia inmediatamente al proceso 1.
+   - El proceso 1 usa la CPU mientras el proceso 0 está esperando que termine la E/S.
+   - Cuando la E/S del proceso 0 termina, este se vuelve listo para ejecutarse y el sistema lo ejecuta en su turno.
+
+   <br>
+
+   **Estadisticas**
+   - Total de tiempo: 7 ciclos.
+   - CPU Busy: 6 (85.71%) → La CPU estuvo ocupada el 85.71% del tiempo.
+   - IO Busy: 5/7 (71.43%) → El sistema estuvo ocupado con E/S el 71.43% del tiempo.
+
+   <br>
+
+   Esto confirma que con `SWITCH_ON_IO`, la CPU sigue trabajando incluso cuando hay procesos en espera de E/S, en lugar de desperdiciar ciclos de reloj.
+   Al usar `SWITCH_ON_IO`, el sistema logra:
+
+   <br>
+
+   ✅ Mejor utilización de la CPU (menor tiempo ocioso).
+   <br>
+   ✅ Ejecución simultánea de E/S y CPU, optimizando el tiempo total de ejecución.
+   <br>
+   ✅ Finalización más rápida de los procesos, ya que no hay demoras innecesarias.
+
+   Este es un comportamiento ideal en sistemas multitarea donde considero se busca la máxima eficiencia de los recursos
+
+   <br>
+
+   <div align="center">
+      <img src="https://github.com/DuvanR0598/Simulacion1_SO20251/blob/main/Imagenes/Pregunta%205.png?raw=true" alt="Pregunta 1" width="700"/>
+   </div>
    </details>
    <br>
 
-8. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
+9. One other important behavior is what to do when an I/O completes. With `-I IO RUN LATER`, when an I/O completes, the process that issued it is not necessarily run right away; rather, whatever was running at the time keeps running. What happens when you run this combination of processes? (`./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I IO RUN LATER`) Are system resources being effectively utilized?
    
    <details>
    <summary>Answer</summary>
@@ -148,7 +180,7 @@ This program, [`process-run.py`](process-run.py), allows you to see how process 
    </details>
    <br>
 
-9. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
+10. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process that issued the I/O. How does this behavior differ? Why might running a process that just completed an I/O again be a good idea?
    
    <details>
    <summary>Answer</summary>
