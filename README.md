@@ -2,8 +2,9 @@
 
 |Integrante|correo|usuario github|
 |---|---|---|
-|Nombre completo integrante 1|correo integrante 1|gihub user integrante 1|
-|Nombre completo integrante 2|correo integrante 2|gihub user integrante 2|
+|Paula Andrea Guarin Guarin |paula.guaring@udea.edu.co |1740 / panguaring|
+|Claudia Lucía Serna Gómez|claudial.serna@udea.edu.co|claudialserna|
+|Duvan Ferney Ruiz Ocampo|duvan.ruiz1@udea.edu.co|DuvanR0598|
 
 ## Instrucciones
 
